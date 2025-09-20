@@ -1,0 +1,105 @@
+name=Nordic Semiconductor nRF54L15 Boards
+version=0.0.1
+
+# Compile variables
+# -----------------
+
+compiler.warning_flags=-w
+compiler.warning_flags.none=-w
+compiler.warning_flags.default=
+compiler.warning_flags.more=-Wall
+compiler.warning_flags.all=-Wall -Wextra
+
+compiler.path={runtime.tools.arm-zephyr-eabi.path}/bin/
+compiler.c.cmd=arm-zephyr-eabi-gcc
+compiler.c.flags=-mcpu={build.mcu} -mthumb -c -g -Os {compiler.warning_flags} {build.float_flags} -std=gnu11 -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -MMD
+compiler.c.elf.cmd=arm-zephyr-eabi-gcc
+compiler.c.elf.flags=-Os -Wl,--gc-sections -save-temps
+compiler.S.cmd=arm-zephyr-eabi-gcc
+compiler.S.flags=-c -g -x assembler-with-cpp
+compiler.cpp.cmd=arm-zephyr-eabi-g++
+compiler.cpp.flags=-mcpu={build.mcu} -mthumb -c -g -Os {compiler.warning_flags} {build.float_flags} -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD
+compiler.ar.cmd=arm-zephyr-eabi-ar
+compiler.ar.flags=rcs
+compiler.objcopy.cmd=arm-zephyr-eabi-objcopy
+compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
+compiler.elf2bin.flags=-O binary
+compiler.elf2bin.cmd=arm-zephyr-eabi-objcopy
+compiler.elf2hex.flags=-O ihex
+compiler.elf2hex.cmd=arm-zephyr-eabi-objcopy
+compiler.ldflags=-mcpu={build.mcu} -mthumb {build.float_flags} -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align
+compiler.size.cmd=arm-zephyr-eabi-size
+compiler.define=-DARDUINO=
+
+# this can be overriden in boards.txt
+build.extra_flags=
+build.lfclk_flags=
+
+nrf.sdk.path={build.core.path}/nrfx
+
+compiler.nrf.flags=-DEXTENDED_PIN_MODE -DNRF_APPLICATION -DNRF54L15_XXAA "-I{nrf.sdk.path}/" "-I{nrf.sdk.path}/mdk/" "-I{nrf.sdk.path}/hal/" "-I{nrf.sdk.path}/drivers/include/" "-I{build.variant.path}/nrfx_config" "-I{runtime.tools.AduinoCore-API.path}/ArduinoCore-API-master/" "-I{build.core.path}/linker_scripts/" "-I{build.core.path}/CMSIS_6/"
+compiler.nrf.ldflags="-L{build.variant.path}"
+
+# These can be overridden in platform.local.txt
+compiler.c.extra_flags=
+compiler.c.elf.extra_flags=
+compiler.cpp.extra_flags=
+compiler.S.extra_flags=
+compiler.ar.extra_flags=
+compiler.elf2bin.extra_flags=
+compiler.elf2hex.extra_flags=
+
+
+# Compile patterns
+# ----------------
+
+## Compile c files
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {compiler.nrf.flags} {build.lfclk_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile c++ files
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {compiler.nrf.flags} {build.lfclk_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile S files
+recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.S.extra_flags} {build.extra_flags} {build.lfclk_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Create archives
+recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
+
+## Combine gc-sections, archives, and objects
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}"  "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} {compiler.nrf.flags} {compiler.nrf.ldflags} "-L{nrf.sdk.path}/" "-T{build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" --specs=nano.specs --specs=nosys.specs {compiler.ldflags} -o "{build.path}/{build.project_name}.elf" {object_files} -Wl,--start-group -lm "{build.path}/{archive_file}" -Wl,--end-group
+
+recipe.cpp.combine.pattern="{compiler.path}{compiler.cpp.elf.cmd}"  "-L{build.path}" {compiler.cpp.elf.flags} {compiler.cpp.elf.extra_flags} {compiler.nrf.flags} {compiler.nrf.ldflags} "-L{nrf.sdk.path}/" "-T{build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" --specs=nano.specs --specs=nosys.specs {compiler.ldflags} -o "{build.path}/{build.project_name}.elf" {object_files} -Wl,--start-group -lm "{build.path}/{archive_file}" -Wl,--end-group
+
+## Create output (bin file)
+recipe.objcopy.bin.pattern="{compiler.path}{compiler.elf2bin.cmd}" {compiler.elf2bin.flags} {compiler.elf2bin.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+
+## Create output (hex file)
+recipe.objcopy.hex.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} {compiler.elf2hex.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.hex"
+
+## Save bin
+recipe.output.tmp_file_bin={build.project_name}.bin
+recipe.output.save_file_bin={build.project_name}.save.bin
+
+## Save hex
+recipe.output.tmp_file_hex={build.project_name}.hex
+recipe.output.save_file_hex={build.project_name}.save.hex
+
+## Compute size
+recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
+recipe.size.regex=\.text\s+([0-9]+).*
+
+## Export Compiled Binary
+recipe.output.tmp_file={build.project_name}.hex
+recipe.output.save_file={build.project_name}.{build.variant}.hex
+
+#
+# pyocd sketch upload
+#
+
+tools.pyocd.path={runtime.tools.pyocd.path}
+tools.pyocd.cmd={tools.pyocd.path}/pyocd
+tools.pyocd.upload.params.verbose=-v
+tools.pyocd.upload.params.quiet=-q
+
+tools.pyocd.upload.pattern="{tools.pyocd.cmd}" "flash" "-t" "nrf54l" "{build.path}/{build.project_name}.hex"
+tools.pyocd.program.pattern="{tools.pyocd.cmd}" "flash" "-t" "nrf54l" "{build.path}/{build.project_name}.hex"

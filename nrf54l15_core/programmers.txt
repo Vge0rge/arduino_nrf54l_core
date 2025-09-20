@@ -1,0 +1,3 @@
+pyocd.name=pyocd
+pyocd.communication=USB
+pyocd.program.tool=pyocd

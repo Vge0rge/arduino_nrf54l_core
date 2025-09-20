@@ -1,0 +1,31 @@
+menu.chip=Chip
+menu.softdevice=Softdevice
+menu.version=Version
+menu.lfclk=Low Frequency Clock
+menu.board_variant=Board Variant
+
+# nRF54L15 variants
+###################
+
+nrf54l15_dk.name=Official nRF54L15 DK
+
+nrf54l15_dk.build.mcu=cortex-m33
+nrf54l15_dk.build.f_cpu=128000000
+nrf54l15_dk.build.board=nrf54l15_dk
+nrf54l15_dk.build.core=arduino
+nrf54l15_dk.build.variant=nrf54l15_dk
+nrf54l15_dk.build.variant_system_lib=
+nrf54l15_dk.build.extra_flags=-DNRF54L15_XXAA
+nrf54l15_dk.build.float_flags=-mfloat-abi=hard -mfpu=fpv4-sp-d16
+nrf54l15_dk.build.ldscript=nrf54l15.ld
+
+nrf54l15_dk.menu.softdevice.none=None
+nrf54l15_dk.menu.softdevice.none.softdevice=none
+nrf54l15_dk.menu.softdevice.none.softdeviceversion=
+
+nrf54l15_dk.upload.tool=pyocd
+nrf54l15_dk.upload.protocol=jlink
+nrf54l15_dk.upload.maximum_size=524288
+
+nrf54l15_dk.vid.0=0x1366
+nrf54l15_dk.pid.0=0x1069

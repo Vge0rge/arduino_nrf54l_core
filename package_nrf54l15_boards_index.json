@@ -1,0 +1,105 @@
+{
+  "packages": [
+    {
+      "name": "Vge0rge",
+      "maintainer": "Georgios Vasilakis",
+      "websiteUrl": "https://github.com/Vge0rge/arduino_nrf54l_core",
+      "Url": "https://github.com/Vge0rge/arduino_nrf54l_core/blob/main/package_nrf54l15_boards_index.json",
+      "email": "",
+      "platforms": [
+        {
+          "name": "Nordic nRF54L15 Boards",
+          "architecture": "nrf54l15",
+          "version": "1.0.0",
+          "category": "Contributed",
+          "url": "https://github.com/Vge0rge/arduino_nrf54l_core/raw/refs/heads/main/archives/nrf54l15_core-1.0.0.zip",
+          "archiveFileName": "nrf54l15_core-1.0.0.zip",
+          "checksum": "SHA-256:9fc652c5dd7999862c69f88ad0fcd917c591063a9024fc99fd086ff0cf6d4469",
+          "size": "1965619",
+          "boards": [
+            {
+              "name": "nrf54l15_dk"
+            }
+          ],
+          "help": {},
+          "toolsDependencies": [
+            {
+              "packager": "Vge0rge",
+              "name": "arm-zephyr-eabi",
+              "version": "0.17.4"
+            },
+            {
+              "packager": "Vge0rge",
+              "name": "hal_nordic",
+              "version": "8.72.3"
+            },
+            {
+              "packager": "Vge0rge",
+              "name": "AduinoCore-API",
+              "version": "1.5.1"
+            },
+            {
+              "packager": "Vge0rge",
+              "name": "pyocd",
+              "version": "0.39.0"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "arm-zephyr-eabi",
+          "version": "0.17.4",
+          "systems": [
+            {
+              "size": "115086932",
+              "checksum": "SHA-256:1b61084fe12076a3639aa2d028b5258f41eb3d0f7d46a16264949e1d213f1915",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "toolchain_linux-x86_64_arm-zephyr-eabi.tar.xz",
+              "url": "https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.4/toolchain_linux-x86_64_arm-zephyr-eabi.tar.xz"
+            }
+          ]
+        },
+        {
+          "name": "hal_nordic",
+          "version": "8.72.3",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "https://github.com/Vge0rge/arduino_nrf54l_core/raw/refs/heads/main/archives/hal_nordic-57d9fc5.zip",
+              "archiveFileName": "hal_nordic-57d9fc5.zip",
+              "size": "25734972",
+              "checksum": "SHA-256:efcb1ccc3d624990179ca15049bf14527f532e7d8d0dc57ce07468394110be52"
+            }
+          ]
+        },
+        {
+          "name": "AduinoCore-API",
+          "version": "1.5.1",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "https://github.com/Vge0rge/arduino_nrf54l_core/raw/refs/heads/main/archives/ArduinoCore-API-4a02bfc.zip",
+              "archiveFileName": "ArduinoCore-API-4a02bfc.zip",
+              "size": "398357",
+              "checksum": "SHA-256:534a1049ee7db2bfe1ca711d0cf6de01f51f9d3eb4e04f17fde3aa2a527cfeae"
+            }
+          ]
+        },
+        {
+          "name": "pyocd",
+          "version": "0.39.0",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "https://github.com/Vge0rge/arduino_nrf54l_core/raw/refs/heads/main/archives/pyocd-0.39.0_2db39e10.zip",
+              "archiveFileName": "pyocd-0.39.0_2db39e10.zip",
+              "size": "34836929",
+              "checksum": "SHA-256:5365e38b426b549adb7248ea754b3f1ed56526d0614762ec185639e6b1e869bb"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

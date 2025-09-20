@@ -1,0 +1,13 @@
+I copied the following folders as is in the MDK
+drivers
+hal
+haly
+helpers
+soc 
+
+Copied the nrfx.h manually
+
+From MDK I manually removed all the files not relevant to the nrf54l15
+
+
+The version that I used is the 8.72.3 and specifically the commit:  57d9fc5
